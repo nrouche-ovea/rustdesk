@@ -42,7 +42,7 @@ jobs:
   build-rustdesk-lib-linux-amd64:
     needs: [generate-bridge-linux, build-vcpkg-deps-linux]
     name: build-rust-lib ${{ matrix.job.target }} (${{ matrix.job.os }}) [${{ matrix.job.extra-build-features }}]
-    runs-on: self-hosted
+    runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -179,7 +179,7 @@ jobs:
                 fi
                 cargo build --lib --features hwcodec,flutter,flutter_texture_render,${{ matrix.job.extra-build-features }},$DEFAULT_FEAT --release
                 ;;
-       -     esac
+            esac
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@master
@@ -190,7 +190,7 @@ jobs:
   build-rustdesk-linux-amd64:
     needs: [build-rustdesk-lib-linux-amd64]
     name: build-rustdesk ${{ matrix.job.target }} (${{ matrix.job.os }}) [${{ matrix.job.extra-build-features }}]
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
